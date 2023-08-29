@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.apps.ForumConfig',
+    'django.apps.InstructionsConfig',
+    'django.apps.PagesConfig',
+    'django.apps.UserConfig',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +55,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'soyuz76_portal.urls'
+
+TEMPLATES_DIR = BASE_DIR / 'templates'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static_dev',
+]
 
 TEMPLATES = [
     {
