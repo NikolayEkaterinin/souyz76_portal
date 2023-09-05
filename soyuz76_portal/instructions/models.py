@@ -1,3 +1,10 @@
 from django.db import models
 
-# Create your models here.
+
+class Category(models.Model):
+    pass
+
+
+class Instruction(models.Model):
+    pass
+

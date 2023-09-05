@@ -37,12 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.apps.ForumConfig',
-    'django.apps.InstructionsConfig',
-    'django.apps.PagesConfig',
-    'django.apps.UserConfig',
+    'forum.apps.ForumConfig',
+    'instructions.apps.InstructionsConfig',
+    'pages.apps.PagesConfig',
+    'user.apps.UserConfig',
     'django_bootstrap5',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,11 +61,10 @@ TEMPLATES_DIR = BASE_DIR / 'templates'
 STATICFILES_DIRS = [
     BASE_DIR / 'static_dev',
 ]
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
