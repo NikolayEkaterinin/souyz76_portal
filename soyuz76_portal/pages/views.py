@@ -7,14 +7,6 @@ class IndexPagesView(TemplateView):
     template_name = 'base/index.html'
 
 
-class RulesPagesView(TemplateView):
-    template_name = 'pages/rules.html'
-
-
-class AboutPageView(TemplateView):
-    template_name = 'pages/about.html'
-
-
 def page_not_found(request, exception):
     return render(request, 'pages/404.html', status=404)
 
