@@ -1,6 +1,6 @@
 from django.urls import path, reverse_lazy, include
 from django.contrib.auth import views
-from .views import IndexPagesView
+from .views import IndexPagesView, AboutRegistrationView
 
 from django.views.generic.edit import CreateView
 
@@ -14,6 +14,11 @@ urlpatterns = [
     path('login/',
          views.LoginView.as_view(template_name='registration/login.html'),
          name='login',),
+
+    path('about_registration/',
+         AboutRegistrationView.as_view(template_name='registration/about_registration.html'),
+         name='about_registration'
+         ),
     # Логаут.
     path(
         'logout/',
@@ -42,7 +47,7 @@ urlpatterns = [
         CreateView.as_view(
             template_name='registration/registration_form.html',
             form_class=RegistrationForm,
-            success_url=reverse_lazy('pages:index'),
+            success_url=reverse_lazy('pages:about_registration'),
         ),
         name='registration',
     ),
