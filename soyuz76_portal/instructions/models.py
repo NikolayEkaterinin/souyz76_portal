@@ -1,7 +1,18 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-
+import os
 User = get_user_model()
+
+
+def instruction_file_upload_path(instance, filename):
+    # Получаем название категории, связанной с этой инструкцией
+    category_name = instance.category.name
+
+    # Убираем специальные символы и пробелы из имени файла
+    filename = os.path.basename(filename)
+
+    # Генерируем путь загрузки на основе названия категории и очищенного имени файла
+    return f'instruction_files/{category_name}/{filename}'
 
 
 class Category(models.Model):
@@ -15,6 +26,15 @@ class Category(models.Model):
         null=False,
         verbose_name='Описание категории'
     )
+    slug = models.SlugField(
+        unique=True,
+        null=False,
+        verbose_name='Идентификатор',
+        help_text=(
+            'Идентификатор страницы для URL; '
+            'разрешены символы латиницы, '
+            'цифры, дефис и подчёркивание.'
+        ))
 
     class Meta:
         verbose_name = 'Категория'
@@ -51,11 +71,8 @@ class Instruction(models.Model):
         verbose_name='Добавлено'
     )
     file = models.FileField(
-        upload_to='instruction_files/',  # Папка, в которой будут храниться файлы
-        null=True,
-        blank=True,
-        verbose_name='Файл инструкции'
-    )
+        upload_to=instruction_file_upload_path,
+        null=True)
 
     class Meta:
         verbose_name = 'Инструкция'
