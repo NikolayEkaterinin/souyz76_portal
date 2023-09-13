@@ -1,0 +1,12 @@
+
+dpython:S1192ÿ
+"FDefine a constant instead of duplicating this literal "%s_id" 4 times.(êÑ“ƒüÿÿÿÿ
+}python:S1192÷"_Define a constant instead of duplicating this literal "'%s' instance expected, got %r" 3 times.(»§ñ‚üÿÿÿÿ
+epython:S1192®"GDefine a constant instead of duplicating this literal "%s__in" 5 times.(µŽ·§üÿÿÿÿ
+zpython:S100„"]Rename method "RelatedObjectDoesNotExist" to match the regular expression ^[a-z_][a-z0-9_]*$.(žšöÞÿÿÿÿÿ
+epython:S1134¦"LTake the required action to fix the issue indicated by this "FIXME" comment.(ßñ¡ù
+rpython:S3776É"TRefactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed.(Õ¢ø«øÿÿÿÿ
+rpython:S3776ü"TRefactor this function to reduce its Cognitive Complexity from 19 to the 15 allowed.(ý¤Ì²úÿÿÿÿ
+zpython:S100—"]Rename method "RelatedObjectDoesNotExist" to match the regular expression ^[a-z_][a-z0-9_]*$.(žšöÞÿÿÿÿÿ
+mpython:S3776ø"TRefactor this function to reduce its Cognitive Complexity from 59 to the 15 allowed.(úÊ×Ü
+lpython:S3776Ò"TRefactor this function to reduce its Cognitive Complexity from 56 to the 15 allowed.(¯÷Ð<

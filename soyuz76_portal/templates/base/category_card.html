@@ -1,0 +1,19 @@
+<div class="col d-flex justify-content-center">
+  <div class="card" style="width: 40rem;">
+    <div class="card-body">
+      {% if instruction.image %}
+        <a href="{{ category.image.url }}" target="_blank">
+          <img class="border-3 rounded img-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ instruction.image.url }}">
+        </a>
+      {% endif %}
+
+      <h6 class="card-subtitle mb-2 text-muted"></h6>
+      <h5 class="card-title"><a href="{% url 'pages:instructions_category_list' category.slug %}">{{ category.name}}</a></h5>
+      <p class="card-text">{{ category.description|truncatewords:3 }}</p>
+
+
+
+
+    </div>
+  </div>
+</div>

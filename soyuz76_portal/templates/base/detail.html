@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ instruction.title }} | {% if instruction.location and instruction.location.is_published %}{{ instruction.location.name }}{% else %}Планета Земля{% endif %} |
+  {{ instruction.pub_date|date:"d E Y" }}
+{% endblock %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-body">
+        {% if instruction.image %}
+          <a href="{{ instruction.image.url }}" target="_blank">
+            <img class="border-3 rounded img-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ instruction.image.url }}">
+          </a>
+        {% endif %}
+        <h5 class="card-title">{{ instruction.title }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          <small>
+            {% if not instruction.created_at %}
+              <p class="text-danger">Пост снят с публикации админом</p>
+            {% elif not instruction.category_id %}
+              <p class="text-danger">Выбранная категория снята с публикации админом</p>
+            {% endif %}
+            {{ instruction.created_at|date:"d E Y, H:i" }} |
+            <br>
+          </small>
+        </h6>
+        <p class="card-text">{{ instruction.content|linebreaksbr }}</p>
+
+        {% if user.is_superuser %}
+          <div class="mb-2">
+            <a class="btn btn-sm text-muted" href="{% url 'pages:update' instruction.id %}" role="button">
+              Отредактировать инструкцию
+            </a>
+            <a class="btn btn-sm text-muted" href="{% url 'pages:delete' instruction.id %}" role="button">
+              Удалить инструкцию
+            </a>
+          </div>
+        {% endif %}
+
+
+        <div>
+          {% if instruction.file %}
+            <h6>Прикрепленные файлы:</h6>
+            <ul>
+              <li>
+                <a href="{{ instruction.file.url }}" download>Скачать инструкцию</a>
+              </li>
+            </ul>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

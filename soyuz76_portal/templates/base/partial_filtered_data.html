@@ -1,0 +1,14 @@
+{% for fn_replacement in fn_replacements %}
+  <tr>
+    <td class="table-body-cell">{{ fn_replacement.name_object }}</td>
+    <td class="table-body-cell">{{ fn_replacement.sap }}</td>
+    <td class="table-body-cell">{{ fn_replacement.legal_entity }}</td>
+    <td class="table-body-cell">{{ fn_replacement.addres_object }}</td>
+    <td class="table-body-cell">{{ fn_replacement.nomer_pos }}</td>
+    <td class="table-body-cell">{{ fn_replacement.model_fr }}</td>
+    <td class="table-body-cell">{{ fn_replacement.sn_fr }}</td>
+    <td class="table-body-cell">{{ fn_replacement.sn_fn }}</td>
+    <td class="table-body-cell">{{ fn_replacement.date_fp }}</td>
+    <td class="table-body-cell">{{ fn_replacement.replacement_date }}</td>
+  </tr>
+{% endfor %}

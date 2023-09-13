@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}
+  Главная страница
+{% endblock %}
+{% block content %}
+  {% if user.is_authenticated %}
+    <h4>Список инструкций</h4>
+
+    <ul>
+      {% for instruction in object_list %}
+        {% include "base/instructions_card.html" %}
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Для доступа к информации необходимо <a href="{% url 'login' %}">авторизоваться</a>.</p>
+  {% endif %}
+{% endblock %}

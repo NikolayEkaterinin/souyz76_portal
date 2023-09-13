@@ -1,0 +1,69 @@
+{% load static %}
+<header>
+  <style>
+    /* Стили для кнопок */
+    .btn {
+      font-size: 12px; /* Размер шрифта */
+      padding: 5px 10px; /* Внутренний отступ кнопок */
+    }
+
+    /* Стили для текста внутри кнопок */
+    .btn a {
+      font-size: 12px; /* Размер шрифта текста внутри кнопок */
+    }
+    .bodyclass{
+        font-size: 12px; /* Размер шрифта текста внутри тела страницы */
+    }
+  </style>
+  <nav class="navbar navbar-light" style="background-color: white">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'pages:index' %}">
+        <img src="{% static 'img/logo.png' %}" width="200" height="50" class="d-inline-block align-top" alt="">
+      </a>
+      {% with request.resolver_match.view_name as view_name %}
+      {% if user.is_authenticated %}
+      <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+            href="{% url 'pages:category_list' %}">Инструкции</a></button>
+        <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+            href="{% url 'fn:fn_replacement_table' %}">График замены ФН</a></button>
+        <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+            href="#">ППР</a></button>
+      </div>
+      {% if user.employee_position.name == 'Администратор' %}
+      <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+            href="{% url 'fn:fill_database' %}">Загрузка графика замен ФН</a></button>
+        <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+            href="#">Пользователи ресурса</a></button>
+      </div>
+      {% endif %}
+      {% if user.employee_position.name == 'Администратор' %}
+      <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+            href="{% url 'pages:create' %}">Создать инструкцию</a></button>
+        <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+            href="{% url 'pages:create_category' %}">Создать категорию</a></button>
+      </div>
+      {% endif %}
+      <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+            href="{% if user.employee_position.name == 'Администратор' %}{% url 'pages:profile_admin' user.username %}{% else %}{% url 'pages:profile' user.username %}{% endif %}">
+            {{ user.last_name }}
+          </a>
+        </button>
+        <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+            href="{% url 'pages:logout' %}">Выйти</a></button>
+      </div>
+      {% else %}
+      <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+            href="{% url 'pages:login' %}">Войти</a></button>
+        <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+            href="{% url 'pages:registration' %}">Регистрация</a></button>
+      </div>
+      {% endif %}
+      {% endwith %}
+    </div>
+  </nav>
+</header>

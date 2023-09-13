@@ -1,0 +1,8 @@
+{% if instruction.category.slug %}
+                <a href="{% url 'pages:instructions_category_list' category.slug %}">
+                    {{ category.name }}
+                </a>
+{% else %}
+    <!-- Обработка случая, когда slug отсутствует или пуст -->
+    {{ instruction.category.title }}
+{% endif %}

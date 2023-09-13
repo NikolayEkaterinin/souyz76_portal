@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ user.employee_position }} {{ user.last_name }}
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-3">
+      <p class="mb-1 text-center">Панель администратора</p>
+      <small>
+        <ul class="list-group list-group-item-heading justify-content-left">
+          <li class="list-group-item text-muted ">Имя пользователя:<br/> {{ user.last_name }} {{ user.first_name }}</li><br/>
+          <li class="list-group-item text-muted ">Роль:<br/> {{ user.employee_position }}</li><br/>
+          <li class="list-group-item text-muted ">День рождения:<br/> {{ user.birthday }}</li><br/>
+          <li class="list-group-item text-muted ">Регион работы:<br/>{% for region in user.regions.all %}{{ region.name }} <br> {% endfor %}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal justify-content-left col-md-3">
+          {% if user.is_authenticated and request.user == user %}
+            <a  class="btn btn-sm text-muted " href="{% url 'pages:profile_edit' user.username %}">Редактировать профиль</a><br />
+            <a class="btn btn-sm text-muted " href="{% url 'password_change' %}">Изменить пароль</a>
+          {% endif %}
+        </ul>
+      </small>
+    </div>
+    <div class="col-md-6">
+        <p class="text-center>Ближайшие"> замены ФН</p>
+
+      <!-- Ваш контент для Замен ФН -->
+    </div>
+    <div class="col-md-3">
+      <div class="list-group list-group-item-heading justify-content-center">ППР</div>
+      <!-- Ваш контент для Замен ФН -->
+    </div>
+  </div>
+{% endblock %}

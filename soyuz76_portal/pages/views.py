@@ -93,6 +93,22 @@ class InstructionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
     def test_func(self):
         return is_superuser(self.request.user)
 
+class CategoryCreateView(CreateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'base/create.html'
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        username = self.request.user.username
+        return reverse('pages:profile', kwargs={'username': username})
+
+    def test_func(self):
+        return is_superuser(self.request.user)
+
+
 class ProfileDetailView(DetailView):
     model = CustomUser  # Замените на вашу модель
     form_class = RegistrationForm

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-header">
+        Регистрация пользователя
+      </div>
+      <div class="card-body">
+        <form method="post" id="registration-form">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          {% bootstrap_button button_type="submit" content="Создать" %}
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const registrationForm = document.getElementById("registration-form");
+      const usernameInput = registrationForm.querySelector('[name="username"]');
+
+      usernameInput.addEventListener("input", function () {
+        const usernameValue = usernameInput.value;
+        const cyrillicPattern = /[а-яА-Я]/;
+
+        if (cyrillicPattern.test(usernameValue)) {
+          usernameInput.setCustomValidity("Логин не должен содержать кириллицу.");
+        } else {
+          usernameInput.setCustomValidity("");
+        }
+      });
+    });
+  </script>
+{% endblock %}

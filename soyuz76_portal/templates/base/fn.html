@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}
+  График замен ФН
+{% endblock %}
+{% block content %}
+  <div class="container">
+    <h1>График замен ФН</h1>
+    <style>
+      /* ... your existing styles ... */
+
+      /* Custom class for reducing font size in table body */
+      .table-body-cell {
+        font-size: 12px; /* Adjust the font size as needed */
+      }
+    </style>
+
+    <!-- Форма для фильтрации данных -->
+    <form id="filter-form">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-1">
+          <div class="form-group">
+            <label for="filter_column_name">Фильтр по названию объекта:</label>
+            <input type="text" class="form-control" id="filter_column_name" name="filter_column_name">
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="form-group">
+            <label for="filter_legal_entity">Фильтр по юридическому лицу:</label>
+            <input type="text" class="form-control" id="filter_legal_entity" name="filter_legal_entity">
+          </div>
+        </div>
+
+        <!-- Добавьте другие поля фильтрации по необходимости -->
+        <!-- Пример: -->
+        <!-- <div class="col-md-1">
+          <div class="form-group">
+            <label for="filter_sap">Фильтр по SAP:</label>
+            <input type="text" class="form-control" id="filter_sap" name="filter_sap">
+          </div>
+        </div> -->
+        <!-- Добавьте другие поля фильтрации по необходимости -->
+
+        <div class="col-md-2">
+          <div class="form-group">
+            <label>&nbsp;</label>
+            <button type="submit" class="btn btn-primary btn-block">Применить фильтры</button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th class="col-md-2">Название объекта</th>
+            <th class="col-md-1">SAP</th>
+            <th class="col-md-2">Юридическое лицо</th>
+            <th class="col-md-2">Адрес объекта</th>
+            <th class="col-md-1">Номер позиции</th>
+            <th class="col-md-1">Модель ФР</th>
+            <th class="col-md-1">Серийный номер ФР</th>
+            <th class="col-md-1">Серийный номер ФН</th>
+            <th class="col-md-1">Дата первичной регистрации</th>
+            <th class="col-md-1">Дата замены</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          {% for fn_replacement in fn_replacements_page %}
+            <tr>
+              <td class="table-body-cell">{{ fn_replacement.name_object }}</td>
+              <td class="table-body-cell">{{ fn_replacement.sap }}</td>
+              <td class="table-body-cell">{{ fn_replacement.legal_entity }}</td>
+              <td class="table-body-cell">{{ fn_replacement.addres_object }}</td>
+              <td class="table-body-cell">{{ fn_replacement.nomer_pos }}</td>
+              <td class="table-body-cell">{{ fn_replacement.model_fr }}</td>
+              <td class="table-body-cell">{{ fn_replacement.sn_fr }}</td>
+              <td class="table-body-cell">{{ fn_replacement.sn_fn }}</td>
+              <td class="table-body-cell">{{ fn_replacement.date_fp }}</td>
+              <td class="table-body-cell">{{ fn_replacement.replacement_date }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% include "includes/paginator.html" with fn_replacements_page=fn_replacements_page %}
+
+    <!-- Обновленный HTML с добавлением div для отображения результатов фильтрации -->
+    <div id="filtered-results"></div>
+  </div>
+
+  <script>
+    // JavaScript код для обработки отправки формы фильтрации
+    document.getElementById('filter-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+
+      // Получите CSRF-токен из мета-тега в HTML
+      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+      // Добавьте CSRF-токен к данным, отправляемым на сервер
+      formData.append('csrfmiddlewaretoken', csrfToken);
+
+      fetch('{% url 'fn:filter_data' %}', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Обновите div с отфильтрованными результатами
+        document.getElementById('filtered-results').innerHTML = data.filtered_data;
+      });
+    });
+  </script>
+{% endblock %}

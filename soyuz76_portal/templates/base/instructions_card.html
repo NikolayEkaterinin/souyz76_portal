@@ -1,0 +1,23 @@
+<div class="col d-flex justify-content-center">
+  <div class="card" style="width: 40rem;">
+    <div class="card-body">
+      {% if post.image %}
+        <a href="{{ instruction.image.url }}" target="_blank">
+          <img class="border-3 rounded img-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ instruction.image.url }}">
+        </a>
+      {% endif %}
+      <h5 class="card-title">{{ instruction.title }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">
+        <small>
+          {% if not instruction.created_at %}
+            <p class="text-danger">Инструкция снята с публикации админом</p>
+          {% endif %}
+          От автора <a class="text-muted" href="{% url 'pages:profile' instruction.author %}">@{{ instruction.author.username }}</a>
+        </small>
+      </h6>
+      <p class="card-text">{{ instruction.content|truncatewords:10 }}</p>
+      <a href="{% url 'pages:detail' instruction.id %}" class="card-link">Читать полный текст</a>
+
+    </div>
+  </div>
+</div>

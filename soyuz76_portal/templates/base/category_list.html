@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+  Список категорий инструкций
+{% endblock %}
+{% block content %}
+  <div class="row">
+    {% for category in object_list %}
+      <div class="col-md-4">
+        <div class="category-item">
+          {% include "base/category_card.html" %}
+        </div>
+      </div>
+
+      {% if forloop.counter|divisibleby:3 %}
+        <div class="clearfix"></div><br>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% include "includes/paginator.html" %}
+{% endblock %}

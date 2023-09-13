@@ -19,6 +19,7 @@ from .views import (
     ProfileDetailView,
     ProfileUpdateView,
     CategoryListView,
+    CategoryCreateView,
     InstructionCategoryListView,
     ProfileAdminDetailView
 )
@@ -40,8 +41,10 @@ urlpatterns = [
     path('profile/<str:username>/edit', ProfileUpdateView.as_view(), name='profile_edit'),
 
 
+
     # ursl категории
     path('category/', CategoryListView.as_view(), name='category_list'),
+    path('category/create/', CategoryCreateView.as_view(), name='create_category'),
 
     path('instructions/category/<slug:category_slug>/', InstructionCategoryListView.as_view(), name='instructions_category_list'),
 
