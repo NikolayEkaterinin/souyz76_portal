@@ -21,7 +21,8 @@ from .views import (
     CategoryListView,
     CategoryCreateView,
     InstructionCategoryListView,
-    ProfileAdminDetailView
+    ProfileAdminDetailView,
+    PostDetailView
 )
 from django.views.generic.edit import CreateView
 from user.forms import RegistrationForm
@@ -40,7 +41,8 @@ urlpatterns = [
     path('profile/<str:username>/admin', ProfileAdminDetailView.as_view(), name='profile_admin'),
     path('profile/<str:username>/edit', ProfileUpdateView.as_view(), name='profile_edit'),
 
-
+    # Post urls
+    path('post/<int:pk>', PostDetailView.as_view(), name='post_detail'),
 
     # ursl категории
     path('category/', CategoryListView.as_view(), name='category_list'),

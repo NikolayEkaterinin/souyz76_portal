@@ -8,6 +8,9 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView,
                                   ListView, UpdateView, TemplateView)
 
+from .models import Post
+from .forms import PostForm
+
 from instructions.models import Instruction, Category
 from instructions.forms import InstructionForm, CategoryForm
 from user.models import CustomUser
@@ -19,15 +22,21 @@ NUMBER_OF_INSTRUCTIONS = 10
 def is_superuser(user):
     return user.is_superuser
 
+
+
+
 class IndexListView(ListView):
-    model = Instruction
+    model = Post
     template_name = "base/index.html"
     paging = NUMBER_OF_INSTRUCTIONS
-    ordering = ('-created_at')
+    ordering = '-created_at'
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.select_related('author', 'category')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['posts'] = self.get_queryset()
+        return context
+
+
 
 
 class InstructionDetailView(DetailView):
@@ -38,6 +47,17 @@ class InstructionDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['form'] = InstructionForm()
         return context
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'base/detail_post.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = PostForm(instance=self.object)
+        return context
+
 
 
 class InstructionCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
@@ -143,7 +163,7 @@ class CategoryListView(ListView):
 
 class InstructionCategoryListView(ListView):
     model = Instruction
-    template_name = "base/index.html"
+    template_name = "base/list_instructions.html"
     ordering = ('-created_at')
 
     def get_queryset(self):

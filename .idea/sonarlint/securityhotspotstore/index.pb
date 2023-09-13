@@ -49,8 +49,6 @@ S
 Ldjango_sprint4-1-main/blogicum/templates/registration/registration_form.html,d/7/d7c9e7eb35d9ccf9a16e6f099e22bdb2215b25d8
 t
 Dvenv/lib/python3.11/site-packages/django/db/backends/sqlite3/base.py,9/e/9e3b3748c70f5ede587c0c0f0df4f807684c6f8c
-M
-soyuz76_portal/pages/tests.py,1/9/1961dd78a1dfc9acee89d563c3780281c3df5a9c
 m
 =venv/lib/python3.11/site-packages/django/db/backends/utils.py,5/f/5f513de209ab8f38013ac517b48df238096fb112
 d
@@ -83,16 +81,10 @@ L
 soyuz76_portal/user/admin.py,2/d/2dc3148cf8aac5831d7a73006bddc73a044b6f63
 T
 $soyuz76_portal/instructions/tests.py,4/0/402fa6482e7d6bef64a8e66eb8e63e0c79317eff
-d
-4soyuz76_portal/templates/base/instructions_card.html,0/6/06e03cf69812003a02cc929de5e39b37604a021d
 [
 +soyuz76_portal/templates/base/category.html,2/e/2ebf29dbf9628d609bba094fd77f675e4ffc76e2
-X
-(soyuz76_portal/templates/base/index.html,8/a/8a437b17859ca84483b2f18b5009e2e723ada4fb
 _
 /soyuz76_portal/templates/base/instructions.html,c/d/cd7e278befe4e1ed9168e8bd2da65fc5f011dc8d
-Y
-)soyuz76_portal/templates/base/detail.html,0/9/09f72dfb21ba9743bb503f5eb0295df32d5f3d45
 `
 0soyuz76_portal/templates/includes/post_card.html,f/c/fcf6bbf7bbc4b47052acec6aebca89a5742c8633
 d
@@ -137,10 +129,6 @@ R
 "soyuz76_portal/parameters/admin.py,3/0/305b48f42b04d7f511e703e64d7bce4721f1791e
 L
 soyuz76_portal/pages/apps.py,b/c/bc813d2d7890a8821afcae82e41413f62c7483eb
-M
-soyuz76_portal/pages/admin.py,8/b/8b8a9bacda59856a5c6816d9d39fba4d4f7209ee
-T
-$soyuz76_portal/instructions/admin.py,4/6/460a1ddf54c06d14cf5c1446ffdf3b64fa449ac0
 J
 soyuz76_portal/fn/admin.py,d/3/d3b9674befd0a723db8b82c7536bbd6ad16ecffe
 J

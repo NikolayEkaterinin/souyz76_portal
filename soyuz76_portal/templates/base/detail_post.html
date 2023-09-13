@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ post.name }} | Посты | {{ post.pub_date|date:"d E Y" }}
+{% endblock %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{ post.name }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          {{ post.description }}
+        </h6>
+
+        <div>
+          {% if post.url %}
+            <h6>Ссылка на инструкцию:</h6>
+            <a href="{{ post.url }}" target="_blank">Ссылка на обнавленную инструкцию</a>
+          {% endif %}
+        </div>
+
+        <div>
+          <h6>Прикрепленные файлы:</h6>
+          {% if post.file %}
+            <ul>
+              <li>
+                <a href="{{ post.file.url }}" download>Скачать инструкцию</a>
+              </li>
+            </ul>
+          {% endif %}
+        </div>
+
+        <div class="mb-2">
+          <a class="btn btn-sm text-muted" href="#" role="button">
+            Редактировать пост
+          </a>
+          <a class="btn btn-sm text-muted" href="#" role="button">
+            Удалить пост
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

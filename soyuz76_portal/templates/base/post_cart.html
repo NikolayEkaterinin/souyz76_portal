@@ -1,0 +1,15 @@
+<div class="col d-flex justify-content-center">
+  <div class="card" style="width: 40rem;">
+    <div class="card-body">
+
+      <h5 class="card-title">{{ posts.name }}</h5>
+
+      <p class="card-text">{{ post.description|truncatewords:10 }}</p>
+        <h6 class="card-subtitle mb-2 text-muted">
+        <small>
+            Дата создания {{ post.created_at}}
+        </small>
+      </h6>
+    </div>
+  </div>
+</div>

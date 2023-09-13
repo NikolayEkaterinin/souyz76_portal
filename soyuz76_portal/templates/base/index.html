@@ -4,12 +4,37 @@
 {% endblock %}
 {% block content %}
   {% if user.is_authenticated %}
-    <h4>Список инструкций</h4>
-
+    <h4 class="col d-flex justify-content-center">Последние новости</h4>
+<br/>
     <ul>
-      {% for instruction in object_list %}
-        {% include "base/instructions_card.html" %}
-      {% endfor %}
+        {% for post in object_list %}
+
+          <div class="col d-flex justify-content-center">
+            <div class="card" style="width: 40rem;">
+              <div class="card-body">
+
+                <h5 class="card-title">{{ post.name }}</h5>
+
+
+                <p class="card-text">{{ post.description|truncatewords:10 }}</p>
+                {% if post.url %}
+                  <a href="{{ post.url }}" target="_blank" class="btn btn-primary">Ссылка на новую инструкцию</a>
+                {% endif %}
+              </div>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    <div class="d-flex justify-content-end"> <!-- Добавляем блок справа -->
+                        <small>
+                            Дата создания {{ post.created_at }}
+                        </small>
+                    </div>
+                </h6>
+
+            </div>
+
+          </div>
+            <br>
+        {% endfor %}
+
     </ul>
   {% else %}
     <p>Для доступа к информации необходимо <a href="{% url 'login' %}">авторизоваться</a>.</p>
