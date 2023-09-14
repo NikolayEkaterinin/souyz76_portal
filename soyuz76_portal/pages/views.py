@@ -24,7 +24,7 @@ def is_superuser(user):
 
 
 
-
+"""Views функции по работе с инструкциями"""
 class IndexListView(ListView):
     model = Post
     template_name = "base/index.html"
@@ -37,9 +37,7 @@ class IndexListView(ListView):
         return context
 
 
-
-
-class InstructionDetailView(DetailView):
+class InstructionDetailView(LoginRequiredMixin, DetailView):
     model = Instruction
     template_name = 'base/detail.html'
 
@@ -48,8 +46,8 @@ class InstructionDetailView(DetailView):
         context['form'] = InstructionForm()
         return context
 
-
-class PostDetailView(DetailView):
+""" Views функции по работе с постами  """
+class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'base/detail_post.html'
 
@@ -57,6 +55,23 @@ class PostDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['form'] = PostForm(instance=self.object)
         return context
+
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = PostForm  # Убедитесь, что это имя вашей формы
+    template_name = 'base/create.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        username = self.request.user.username
+        return reverse('pages:profile', kwargs={'username': username})
+
+    def test_func(self):
+        return is_superuser(self.request.user)
 
 
 
@@ -137,6 +152,7 @@ class ProfileDetailView(DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
+
 class ProfileAdminDetailView(DetailView):
     model = CustomUser  # Замените на вашу модель
     form_class = RegistrationForm
@@ -144,6 +160,7 @@ class ProfileAdminDetailView(DetailView):
     context_object_name = 'user'
     slug_field = 'username'
     slug_url_kwarg = 'username'
+
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = CustomUser  # Replace with your User model
@@ -156,10 +173,12 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('pages:profile', kwargs={'username': self.request.user.username})
 
+
 class CategoryListView(ListView):
     model = Category
     template_name = 'base/category_list.html'
     context_object_name = 'categories'
+
 
 class InstructionCategoryListView(ListView):
     model = Instruction
@@ -181,6 +200,7 @@ class InstructionCategoryListView(ListView):
         context['category_slug'] = category_slug
         return context
 
+
 class AboutRegistrationView(ListView):
     # Определяем модель, связанную с этим представлением
     model = CustomUser
@@ -190,11 +210,14 @@ class AboutRegistrationView(ListView):
         user = request.user
         return render(request, 'registration/about_registration.html', {'user': user})
 
+
 def page_not_found(request, exception):
     return render(request, 'pages/404.html', status=404)
 
+
 def csrf_failure(request, reason=''):
     return render(request, 'pages/403csrf.html', status=403)
+
 
 def server_error(request, reason=''):
     return render(request, 'pages/500.html', status=500)

@@ -1,6 +1,9 @@
 from django.db import models
 
 class Post(models.Model):
+
+    author = models.TextField(max_length=30,
+                              verbose_name='Автор')
     name = models.CharField(max_length=40,
                             verbose_name='Название поста')
     description = models.TextField(max_length=300,
