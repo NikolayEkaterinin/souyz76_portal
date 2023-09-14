@@ -153,8 +153,6 @@ Y
 ,soyuz76_portal/fn/migrations/0001_initial.py,8/0/80b23b157dfe48c5564dcc90ebd065dbae8f8e4f
 G
 soyuz76_portal/trash.py,8/6/86ec67acf3213824a74dac33fe15a2c6e168dd04
-K
-soyuz76_portal/fn/models.py,c/3/c36e00b0e122e2096743baf5f7089d974e0f26ed
 Y
 )soyuz76_portal/parameters/regions_list.py,1/3/13a188247e67be29d2045d307a980f0db7e5c6ab
 `

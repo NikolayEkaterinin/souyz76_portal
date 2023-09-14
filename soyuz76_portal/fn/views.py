@@ -7,7 +7,7 @@ from django.views.generic import ListView, DetailView
 from .models import FnReplacement
 from .forms import ExcelUploadForm
 import openpyxl
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 
@@ -28,6 +28,9 @@ class ExcelUploadFormView(SuperuserRequiredMixin, View):
             excel_file = request.FILES.get('excel_file')
             if excel_file:
                 try:
+                    # Предварительно удаляем все данные из таблицы в БД
+                    FnReplacement.objects.all().delete()
+                    # Погнали перенос данных
                     wb = openpyxl.load_workbook(excel_file, data_only=True)
                     sheet = wb.active
                     records_processed = 0
@@ -79,6 +82,7 @@ class ExcelUploadFormView(SuperuserRequiredMixin, View):
         else:
             return JsonResponse({'error': 'Неверный формат файла.'}, status=400)
 
+
 class FnReplacementListView(ListView):
     model = FnReplacement  # Укажите вашу модель
     template_name = 'base/fn.html'  # Укажите имя вашего шаблона для списка
@@ -91,9 +95,16 @@ class FnReplacementListView(ListView):
         return context
 
 def fn_replacement_table(request):
+    # Определите текущую дату
+    current_date = datetime.now()
+
+    # Вычислите дату, предшествующую текущей дате на 2 месяца
+    two_months_ago = current_date - timedelta(days=60)  # 60 дней приближенно соответствуют 2 месяцам
+
     # Получить все записи из модели FnReplacement, отсортированные по дате и где replacement_date не равно None
     fn_replacements = FnReplacement.objects.filter(
-        ~Q(replacement_date=None)
+        replacement_date__isnull=False,
+        replacement_date__gte=two_months_ago,  # Фильтр для даты не позднее 2 месяцев назад
     ).order_by('replacement_date')
 
     # Получите значения, по которым нужно фильтровать (из GET-параметров запроса)
@@ -108,7 +119,7 @@ def fn_replacement_table(request):
         fn_replacements = fn_replacements.filter(legal_entity__icontains=filter_legal_entity)
     # Примените другие фильтры по необходимости
 
-    # Создать объект Paginator с количеством записей на странице равным 100
+    # Создать объект Paginator с количеством записей на странице равным 30 (или другим по вашему выбору)
     paginator = Paginator(fn_replacements, 30)
 
     # Получить номер текущей страницы из GET-параметра
@@ -134,6 +145,7 @@ def fn_replacement_table(request):
 
     # Отрендерить HTML шаблон с данными таблицы и формой для фильтров
     return render(request, 'base/fn.html', context)
+
 
 
 
