@@ -86,30 +86,27 @@ class ExcelUploadFormView(SuperuserRequiredMixin, View):
             return JsonResponse({'error': 'Неверный формат файла.'}, status=400)
 
 
-class FnReplacementListView(ListView):
-    model = FnReplacement
-    template_name = 'base/fn.html'
-    context_object_name = 'fn_replacements'
-    paginate_by = 30
 
+# Общий Mixin для отображения ФН
+class CommonViewMixin:
+    # Общие методы и атрибуты здесь
+    model = FnReplacement
     def get_queryset(self):
         current_date = datetime.now()
-        two_months_ago = current_date - timedelta(days=60)
+        two_months_ago = current_date - timedelta(days=25)
 
-        queryset = FnReplacement.objects.filter(
+        queryset = self.model.objects.filter(
             replacement_date__isnull=False,
             replacement_date__gte=two_months_ago,
         ).order_by('replacement_date')
+        return queryset
 
-        # Применение фильтров из GET-параметров
         filter_column_name = self.request.GET.get('filter_column_name')
         filter_legal_entity = self.request.GET.get('filter_legal_entity')
-
         if filter_column_name:
             queryset = queryset.filter(name_object__icontains=filter_column_name)
         if filter_legal_entity:
             queryset = queryset.filter(legal_entity__icontains=filter_legal_entity)
-
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -117,25 +114,24 @@ class FnReplacementListView(ListView):
         context['filter_column_name'] = self.request.GET.get('filter_column_name', '')
         context['filter_legal_entity'] = self.request.GET.get('filter_legal_entity', '')
         context['fn_replacements_page'] = context['page_obj']
-        # Добавьте другие фильтры по необходимости
+
         return context
 
-    def get(self, request, *args, **kwargs):
-        self.object_list = self.get_queryset()
-        allow_empty = self.get_allow_empty()
-        if not allow_empty:
-            if self.get_paginate_by(self.object_list) is not None and len(self.object_list) == 0:
-                raise Http404(_("Empty list and '%(class_name)s.allow_empty' is False.") % {
-                    'class_name': self.__class__.__name__,
-                })
-        context = self.get_context_data()
-        return self.render_to_response(context)
 
+# Передача данных на страницу замены ФН
+class FnReplacementListView(CommonViewMixin, ListView):
 
-
-class FnListView(ListView):
-    model = FnReplacement
     template_name = 'base/fn.html'
+    context_object_name = 'fn_replacements'
+    paginate_by = 10
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter_column_name'] = self.request.GET.get('filter_column_name', '')
+        context['filter_legal_entity'] = self.request.GET.get('filter_legal_entity', '')
+        context['fn_replacements_page'] = context['page_obj']
+        return context
 
 
 def search_fn_replacements(request):

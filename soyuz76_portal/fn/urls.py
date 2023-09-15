@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ExcelUploadFormView, FnReplacementListView , search_fn_replacements, filter_data, FnListView
+from .views import ExcelUploadFormView, FnReplacementListView , search_fn_replacements, filter_data
 
 app_name = 'fn'
 
@@ -9,6 +9,4 @@ urlpatterns = [
     path('fn_list/', FnReplacementListView.as_view(), name='fn_list'),
     path('search/', search_fn_replacements, name='search_fn_replacements'),
     path('filter-data/', filter_data, name='filter_data'),
-
-
 ]

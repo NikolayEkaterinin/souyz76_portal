@@ -15,6 +15,8 @@ from instructions.models import Instruction, Category
 from instructions.forms import InstructionForm, CategoryForm
 from user.models import CustomUser
 from user.forms import RegistrationForm, UpdateProfileForm
+from fn.views import CommonViewMixin
+from django.views import generic
 
 NUMBER_OF_INSTRUCTIONS = 10
 
@@ -144,13 +146,28 @@ class CategoryCreateView(CreateView):
         return is_superuser(self.request.user)
 
 
-class ProfileDetailView(DetailView):
-    model = CustomUser  # Замените на вашу модель
+class ProfileDetailView(ListView, CommonViewMixin):
+    model = CustomUser
     form_class = RegistrationForm
     template_name = 'base/profile.html'
-    context_object_name = 'user'
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
+
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = CommonViewMixin().get_queryset()
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user  # Добавляем текущего пользователя в контекст
+
+        # Извлекаем значения полей из текущего пользователя и добавляем их в контекст
+        context['user_birthday'] = self.request.user.birthday
+        context['user_username'] = self.request.user.username
+        context['user_employee_position'] = self.request.user.employee_position
+
+        return context
 
 
 class ProfileAdminDetailView(DetailView):
