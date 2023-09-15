@@ -11,6 +11,9 @@ from datetime import datetime, timedelta
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 
+
+fn_post = FnReplacement.objects.all()
+
 class SuperuserRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
@@ -85,18 +88,21 @@ class ExcelUploadFormView(SuperuserRequiredMixin, View):
 
 class FnReplacementListView(ListView):
     model = FnReplacement  # Укажите вашу модель
-    template_name = 'base/fn.html'  # Укажите имя вашего шаблона для списка
+    template_name = 'includes/fn_base_template.html'  # Укажите имя вашего шаблона для списка
     context_object_name = 'fn_replacements'  # Укажите имя переменной контекста для списка объектов
 
     # Можно добавить дополнительные контекстные данные, если необходимо
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        fn_post = FnReplacement.objects.all()
+        context = {'fn_post': fn_post}
         # Добавьте свои контекстные данные здесь, если нужно
         return context
+
 
 def fn_replacement_table(request):
     # Определите текущую дату
     current_date = datetime.now()
+
 
     # Вычислите дату, предшествующую текущей дате на 2 месяца
     two_months_ago = current_date - timedelta(days=60)  # 60 дней приближенно соответствуют 2 месяцам
@@ -140,16 +146,17 @@ def fn_replacement_table(request):
         'fn_replacements_page': fn_replacements_page,
         'filter_column_name': filter_column_name,
         'filter_legal_entity': filter_legal_entity,
+
         # Добавьте другие фильтры в контекст
     }
 
     # Отрендерить HTML шаблон с данными таблицы и формой для фильтров
-    return render(request, 'base/fn.html', context)
+    return render(request, 'includes/fn_base_template.html',  context)
 
 
-
-
-
+class FnListView(ListView):
+    model = FnReplacement
+    template_name = 'base/fn.html'
 
 
 def search_fn_replacements(request):
@@ -216,8 +223,6 @@ def filter_data(request):
 
     # Преобразуйте HTML-ответ в текст и верните его
     return JsonResponse({'filtered_data': html_response.content.decode()})
-
-
 
 
 
