@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.views import View
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import ListView, DetailView
@@ -87,71 +87,50 @@ class ExcelUploadFormView(SuperuserRequiredMixin, View):
 
 
 class FnReplacementListView(ListView):
-    model = FnReplacement  # Укажите вашу модель
-    template_name = 'includes/fn_base_template.html'  # Укажите имя вашего шаблона для списка
-    context_object_name = 'fn_replacements'  # Укажите имя переменной контекста для списка объектов
+    model = FnReplacement
+    template_name = 'base/fn.html'
+    context_object_name = 'fn_replacements'
+    paginate_by = 30
 
-    # Можно добавить дополнительные контекстные данные, если необходимо
+    def get_queryset(self):
+        current_date = datetime.now()
+        two_months_ago = current_date - timedelta(days=60)
+
+        queryset = FnReplacement.objects.filter(
+            replacement_date__isnull=False,
+            replacement_date__gte=two_months_ago,
+        ).order_by('replacement_date')
+
+        # Применение фильтров из GET-параметров
+        filter_column_name = self.request.GET.get('filter_column_name')
+        filter_legal_entity = self.request.GET.get('filter_legal_entity')
+
+        if filter_column_name:
+            queryset = queryset.filter(name_object__icontains=filter_column_name)
+        if filter_legal_entity:
+            queryset = queryset.filter(legal_entity__icontains=filter_legal_entity)
+
+        return queryset
+
     def get_context_data(self, **kwargs):
-        fn_post = FnReplacement.objects.all()
-        context = {'fn_post': fn_post}
-        # Добавьте свои контекстные данные здесь, если нужно
+        context = super().get_context_data(**kwargs)
+        context['filter_column_name'] = self.request.GET.get('filter_column_name', '')
+        context['filter_legal_entity'] = self.request.GET.get('filter_legal_entity', '')
+        context['fn_replacements_page'] = context['page_obj']
+        # Добавьте другие фильтры по необходимости
         return context
 
+    def get(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        allow_empty = self.get_allow_empty()
+        if not allow_empty:
+            if self.get_paginate_by(self.object_list) is not None and len(self.object_list) == 0:
+                raise Http404(_("Empty list and '%(class_name)s.allow_empty' is False.") % {
+                    'class_name': self.__class__.__name__,
+                })
+        context = self.get_context_data()
+        return self.render_to_response(context)
 
-def fn_replacement_table(request):
-    # Определите текущую дату
-    current_date = datetime.now()
-
-
-    # Вычислите дату, предшествующую текущей дате на 2 месяца
-    two_months_ago = current_date - timedelta(days=60)  # 60 дней приближенно соответствуют 2 месяцам
-
-    # Получить все записи из модели FnReplacement, отсортированные по дате и где replacement_date не равно None
-    fn_replacements = FnReplacement.objects.filter(
-        replacement_date__isnull=False,
-        replacement_date__gte=two_months_ago,  # Фильтр для даты не позднее 2 месяцев назад
-    ).order_by('replacement_date')
-
-    # Получите значения, по которым нужно фильтровать (из GET-параметров запроса)
-    filter_column_name = request.GET.get('filter_column_name', None)
-    filter_legal_entity = request.GET.get('filter_legal_entity', None)
-    # Добавьте другие фильтры по необходимости
-
-    # Примените фильтры, если они заданы
-    if filter_column_name:
-        fn_replacements = fn_replacements.filter(name_object__icontains=filter_column_name)
-    if filter_legal_entity:
-        fn_replacements = fn_replacements.filter(legal_entity__icontains=filter_legal_entity)
-    # Примените другие фильтры по необходимости
-
-    # Создать объект Paginator с количеством записей на странице равным 30 (или другим по вашему выбору)
-    paginator = Paginator(fn_replacements, 30)
-
-    # Получить номер текущей страницы из GET-параметра
-    page = request.GET.get('page')
-
-    try:
-        # Получить объект страницы с номером page
-        fn_replacements_page = paginator.page(page)
-    except PageNotAnInteger:
-        # Если page не является целым числом, отобразить первую страницу
-        fn_replacements_page = paginator.page(1)
-    except EmptyPage:
-        # Если page больше, чем доступное количество страниц, отобразить последнюю страницу
-        fn_replacements_page = paginator.page(paginator.num_pages)
-
-    # Определить контекст данных для передачи в шаблон
-    context = {
-        'fn_replacements_page': fn_replacements_page,
-        'filter_column_name': filter_column_name,
-        'filter_legal_entity': filter_legal_entity,
-
-        # Добавьте другие фильтры в контекст
-    }
-
-    # Отрендерить HTML шаблон с данными таблицы и формой для фильтров
-    return render(request, 'includes/fn_base_template.html',  context)
 
 
 class FnListView(ListView):
