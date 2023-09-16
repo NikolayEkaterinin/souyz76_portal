@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Regions, EmployeePosition
+from .models import Regions, EmployeePosition, Objects
 
 # Регистрируем модель Regions
 @admin.register(Regions)
@@ -22,3 +22,10 @@ class EmployeePositionAdmin(admin.ModelAdmin):
     list_per_page = 20  # Количество объектов на странице
 
     # Дополнительные настройки, если необходимо
+@admin.register(Objects)
+class ObjectsAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+    list_filter = ('name',)
+    ordering = ('name',)
+    list_per_page = 20  # Количество объектов на странице

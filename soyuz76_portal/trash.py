@@ -15,7 +15,7 @@ class SuperuserRequiredMixin(UserPassesTestMixin):
         return self.request.user.is_superuser
 
 class ExcelUploadFormView(SuperuserRequiredMixin, View):
-    template_name = 'loading_excel.html'
+    template_name = 'objects_loading_excel.html'
 
     def get(self, request):
         form = ExcelUploadForm()
