@@ -170,13 +170,29 @@ class ProfileDetailView(ListView, CommonViewMixin):
         return context
 
 
-class ProfileAdminDetailView(DetailView):
+class ProfileAdminDetailView(ListView, CommonViewMixin):
     model = CustomUser  # Замените на вашу модель
     form_class = RegistrationForm
     template_name = 'base/profile_admin.html'
-    context_object_name = 'user'
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
+    template_name = 'base/profile.html'
+
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = CommonViewMixin().get_queryset()
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user  # Добавляем текущего пользователя в контекст
+
+        # Извлекаем значения полей из текущего пользователя и добавляем их в контекст
+        context['user_birthday'] = self.request.user.birthday
+        context['user_username'] = self.request.user.username
+        context['user_employee_position'] = self.request.user.employee_position
+
+        return context
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):

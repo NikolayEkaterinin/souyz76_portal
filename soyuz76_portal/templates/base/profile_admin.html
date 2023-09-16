@@ -23,13 +23,23 @@
         </ul>
       </small>
     </div>
-    <div class="col-md-6">
-        <p class="text-center>Ближайшие"> замены ФН</p>
+      <style>
+        .fn-content {
+            max-width: 100%; /* Ограничиваем ширину содержимого блока */
+            margin: 0 auto; /* Центрируем содержимое по горизонтали */
+        }
+    </style>
+
+    <div class="col-md-8">
+    <p class="text-center">Ближайшие замены ФН</p>
+    <div class="fn-content">
         {% include "includes/fn_base_template.html" %}
+    </div>
+    </div>
 
       <!-- Ваш контент для Замен ФН -->
     </div>
-    <div class="col-md-3">
+    <div class="col-md-1">
       <div class="list-group list-group-item-heading justify-content-center">ППР</div>
 
     </div>

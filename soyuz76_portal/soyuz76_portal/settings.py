@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'parameters.apps.ParametersConfig',
     'fn.apps.FnConfig',
+    'objects.apps.ObjectsConfig',
     'django_bootstrap5',
 ]
 
