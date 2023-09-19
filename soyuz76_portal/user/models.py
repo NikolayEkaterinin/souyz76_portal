@@ -28,8 +28,6 @@ class CustomUser(AbstractUser):
                                           )
     regions = models.ManyToManyField(Regions,
                                      blank=True,
-                                     related_name='managers',
-                                     related_query_name='manager',
                                      )
 
     engineer_folder_path = models.CharField(max_length=255,

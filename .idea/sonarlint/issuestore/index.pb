@@ -31,8 +31,6 @@ t
 Dvenv/lib/python3.11/site-packages/django/core/management/__init__.py,d/2/d29466da6aa61487c6ee496706bf07bf40a42a2c
 9
 	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-]
--soyuz76_portal/templates/includes/footer.html,4/d/4db4c4a93c3596f632bd04272992f4b52c24bbc4
 _
 /soyuz76_portal/static_dev/css/bootstrap.min.css,6/5/65d92063e2c94409ef900607bc5f76afe1a6c488
 V
@@ -119,10 +117,6 @@ i
 9venv/lib/python3.11/site-packages/django/template/base.py,4/7/4775c823f1cd9b7b78e03af7fa6a28f1ffbcb944
 R
 "soyuz76_portal/parameters/tests.py,0/6/0661140081f19886098f1dccdd7768330ae226ba
-S
-#soyuz76_portal/parameters/models.py,a/8/a8ca6b0b080afb64db286a6d3c12204db4f6c696
-M
-soyuz76_portal/user/models.py,e/7/e72264d5e05e891896f76a1737a81fc0f878733c
 Q
 !soyuz76_portal/parameters/apps.py,8/c/8ca81e7e7eb34fe5b15614ab1c974037ae57c513
 R

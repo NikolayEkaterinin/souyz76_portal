@@ -162,11 +162,6 @@ class ProfileDetailView(ListView, CommonViewMixin):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user  # Добавляем текущего пользователя в контекст
 
-        # Извлекаем значения полей из текущего пользователя и добавляем их в контекст
-        context['user_birthday'] = self.request.user.birthday
-        context['user_username'] = self.request.user.username
-        context['user_employee_position'] = self.request.user.employee_position
-
         return context
 
 
@@ -196,9 +191,9 @@ class ProfileAdminDetailView(ListView, CommonViewMixin):
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
-    model = CustomUser  # Replace with your User model
-    form_class = UpdateProfileForm  # Replace with your profile form
-    template_name = 'base/edit_profile.html'  # Replace with the template for editing the profile
+    model = CustomUser
+    form_class = UpdateProfileForm
+    template_name = 'base/edit_profile.html'
 
     def get_object(self, queryset=None):
         return self.request.user  # Edit the profile for the currently logged-in user

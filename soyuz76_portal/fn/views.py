@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 
 from .models import FnReplacement
 from .forms import ExcelUploadForm
+from parameters.models import Objects
 import openpyxl
 from datetime import datetime, timedelta
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -62,20 +63,45 @@ class ExcelUploadFormView(SuperuserRequiredMixin, View):
                                 except ValueError:
                                     replacement_date = None  # Устанавливаем значение как None при неверном формате даты
 
-                        fn_replacement = FnReplacement(
-                            name_object=name_object,
-                            sap=sap,
-                            legal_entity=legal_entity,
-                            addres_object=addres_object,
-                            nomer_pos=nomer_pos,
-                            model_fr=model_fr,
-                            sn_fr=sn_fr,
-                            sn_fn=sn_fn,
-                            date_fp=date_fp,
-                            replacement_date=replacement_date
-                        )
-                        fn_replacement.save()
-                        records_processed += 1
+                        # Поиск объектов с совпадающим SAP значением
+                        matching_objects = Objects.objects.filter(sap=sap)
+
+                        for object_instance in matching_objects:
+                            region_instance = object_instance.regions  # Получение связанного региона
+                            # Создание объекта FnReplacement с установленным значением regions
+                            fn_replacement = FnReplacement(
+                                name_object=name_object,
+                                sap=sap,
+                                legal_entity=legal_entity,
+                                addres_object=addres_object,
+                                nomer_pos=nomer_pos,
+                                model_fr=model_fr,
+                                sn_fr=sn_fr,
+                                sn_fn=sn_fn,
+                                date_fp=date_fp,
+                                replacement_date=replacement_date,
+                                regions=region_instance  # Устанавливаем регион
+                            )
+                            fn_replacement.save()
+                            records_processed += 1
+
+                        # Если SAP не совпадает, создаем FnReplacement с regions=None
+                        if not matching_objects.exists():
+                            fn_replacement = FnReplacement(
+                                name_object=name_object,
+                                sap=sap,
+                                legal_entity=legal_entity,
+                                addres_object=addres_object,
+                                nomer_pos=nomer_pos,
+                                model_fr=model_fr,
+                                sn_fr=sn_fr,
+                                sn_fn=sn_fn,
+                                date_fp=date_fp,
+                                replacement_date=replacement_date,
+                                regions=None  # Устанавливаем regions в None
+                            )
+                            fn_replacement.save()
+                            records_processed += 1
 
                     return JsonResponse({'message': 'Загрузка данных завершена успешно.'})
                 except Exception as e:
