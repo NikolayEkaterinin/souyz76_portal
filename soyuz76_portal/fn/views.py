@@ -32,8 +32,12 @@ class ExcelUploadFormView(SuperuserRequiredMixin, View):
             excel_file = request.FILES.get('excel_file')
             if excel_file:
                 try:
-                    # Предварительно удаляем все данные из таблицы в БД
-                    FnReplacement.objects.all().delete()
+                    # Получить все записи в таблице FnReplacement
+                    fn_replacements = FnReplacement.objects.all()
+
+                    # Удалить каждую запись в цикле
+                    for fn_replacement in fn_replacements:
+                        fn_replacement.delete()
                     # Погнали перенос данных
                     wb = openpyxl.load_workbook(excel_file, data_only=True)
                     sheet = wb.active
@@ -151,13 +155,26 @@ class FnReplacementListView(CommonViewMixin, ListView):
     context_object_name = 'fn_replacements'
     paginate_by = 10
 
+    def get_queryset(self):
+        user_regions = self.request.user.regions.all()  # Получаем все регионы текущего пользователя
+        common_queryset = CommonViewMixin().get_queryset()
+
+        # Фильтруем queryset на основе совпадения регионов пользователя и данных из CommonViewMixin
+        queryset = common_queryset.filter(regions__in=user_regions)
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filter_column_name'] = self.request.GET.get('filter_column_name', '')
         context['filter_legal_entity'] = self.request.GET.get('filter_legal_entity', '')
         context['fn_replacements_page'] = context['page_obj']
+
+        # Добавляем текущего пользователя в контекст
+        context['user'] = self.request.user
+
         return context
+
 
 
 def search_fn_replacements(request):

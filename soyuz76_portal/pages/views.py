@@ -146,23 +146,28 @@ class CategoryCreateView(CreateView):
         return is_superuser(self.request.user)
 
 
+from django.db.models import Q
+
 class ProfileDetailView(ListView, CommonViewMixin):
     model = CustomUser
     form_class = RegistrationForm
     template_name = 'base/profile.html'
-
-    paginate_by = 10
+    paginate_by = 60
 
     def get_queryset(self):
-        queryset = CommonViewMixin().get_queryset()
+        user_regions = self.request.user.regions.all()  # Получаем все регионы текущего пользователя
+        common_queryset = CommonViewMixin().get_queryset()
+
+        # Фильтруем queryset на основе совпадения регионов пользователя и данных из CommonViewMixin
+        queryset = common_queryset.filter(regions__in=user_regions)
 
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user  # Добавляем текущего пользователя в контекст
-
         return context
+
 
 
 class ProfileAdminDetailView(ListView, CommonViewMixin):
