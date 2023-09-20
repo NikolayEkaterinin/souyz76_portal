@@ -29,8 +29,6 @@ L
 soyuz76_portal/forum/urls.py,9/d/9de65c41d6b831ac68948570ef5000bae1943bef
 t
 Dvenv/lib/python3.11/site-packages/django/core/management/__init__.py,d/2/d29466da6aa61487c6ee496706bf07bf40a42a2c
-9
-	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 _
 /soyuz76_portal/static_dev/css/bootstrap.min.css,6/5/65d92063e2c94409ef900607bc5f76afe1a6c488
 V
