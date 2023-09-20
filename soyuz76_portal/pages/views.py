@@ -152,7 +152,7 @@ class ProfileDetailView(ListView, CommonViewMixin):
     model = CustomUser
     form_class = RegistrationForm
     template_name = 'base/profile.html'
-    paginate_by = 60
+    paginate_by = 10
 
     def get_queryset(self):
         user_regions = self.request.user.regions.all()  # Получаем все регионы текущего пользователя

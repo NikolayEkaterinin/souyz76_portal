@@ -1,35 +1,38 @@
-<div class="table-responsive">
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th class="col-md-2">Название объекта</th>
-        <th class="col-md-1">SAP</th>
-        <th class="col-md-2">Юридическое лицо</th>
-        <th class="col-md-2">Адрес объекта</th>
-        <th class="col-md-1">Номер позиции</th>
-        <th class="col-md-1">Модель ФР</th>
-        <th class="col-md-1">Серийный номер ФР</th>
-        <th class="col-md-1">Серийный номер ФН</th>
-        <th class="col-md-1">Дата первичной регистрации</th>
-        <th class="col-md-1">Дата замены</th>
-      </tr>
-    </thead>
-    <tbody id="table-body">
-      {% for fn_replacement in page_obj %}
-        <tr>
-          <td class="table-body-cell">{{ fn_replacement.name_object }}</td>
-          <td class="table-body-cell">{{ fn_replacement.sap }}</td>
-          <td class="table-body-cell">{{ fn_replacement.legal_entity }}</td>
-          <td class="table-body-cell">{{ fn_replacement.addres_object }}</td>
-          <td class="table-body-cell">{{ fn_replacement.nomer_pos }}</td>
-          <td class="table-body-cell">{{ fn_replacement.model_fr }}</td>
-          <td class="table-body-cell">{{ fn_replacement.sn_fr }}</td>
-          <td class="table-body-cell">{{ fn_replacement.sn_fn }}</td>
-          <td class="table-body-cell">{{ fn_replacement.date_fp }}</td>
-          <td class="table-body-cell">{{ fn_replacement.replacement_date }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="container">
+    <div class="table-responsive">
+        <table class="table table-bordered" style="font-size: 14px;">
+            <thead>
+                <tr>
+                    <th>Название объекта</th>
+                    {% if request.resolver_match.url_name == 'fn_list' %}
+                        <th>SAP</th>
+                        <th>Юридическое лицо</th>
+                        <th>Адрес объекта</th>
+                        <th>Модель ФР</th>
+                        <th>Серийный номер ФР</th>
+                        <th>Серийный номер ФН</th>
+                    {% endif %}
+                    <th>Номер кассы</th>
+                    <th>Дата замены</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                {% for fn_replacement in page_obj %}
+                    <tr>
+                        <td>{{ fn_replacement.name_object }}</td>
+                        {% if request.resolver_match.url_name == 'fn_list' %}
+                            <td>{{ fn_replacement.sap }}</td>
+                            <td>{{ fn_replacement.legal_entity }}</td>
+                            <td>{{ fn_replacement.addres_object }}</td>
+                            <td>{{ fn_replacement.model_fr }}</td>
+                            <td>{{ fn_replacement.sn_fr }}</td>
+                            <td>{{ fn_replacement.sn_fn }}</td>
+                        {% endif %}
+                        <td>{{ fn_replacement.nomer_pos }}</td>
+                        <td>{{ fn_replacement.replacement_date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
-

@@ -121,8 +121,6 @@ G
 soyuz76_portal/trash.py,8/6/86ec67acf3213824a74dac33fe15a2c6e168dd04
 Y
 )soyuz76_portal/parameters/regions_list.py,1/3/13a188247e67be29d2045d307a980f0db7e5c6ab
-`
-0soyuz76_portal/templates/includes/paginator.html,2/f/2fbfaa8ee333c1186432e2d371cdca552122d374
 ]
 -soyuz76_portal/templates/includes/footer.html,4/d/4db4c4a93c3596f632bd04272992f4b52c24bbc4
 Å

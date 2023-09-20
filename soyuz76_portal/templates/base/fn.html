@@ -5,23 +5,12 @@
 {% block content %}
   <div class="container">
     <h1>График замен ФН</h1>
-    <style>
-        {
-        font-size: 12px; /* Adjust the font size as needed */
-      }
-    </style>
-
-        <div class="col-md-2">
-          <div class="form-group">
-            <label>&nbsp;</label>
-            <button type="submit" class="btn btn-primary btn-block">Применить фильтры</button>
-          </div>
-        </div>
       </div>
     </form>
 
-
-    {% include "includes/fn_base_template.html"%}
+    <div class="container-fluid">
+        {% include "includes/fn_base_template.html" %}
+    </div>
     {% include "includes/paginator.html" with fn_replacements_page=fn_replacements_page %}
 
 {% endblock %}
