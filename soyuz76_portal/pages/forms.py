@@ -7,6 +7,6 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['name', 'description', 'url']
 
-    # Дополнительные настройки формы, если необходимо
 
-
+class FileUploadForm(forms.Form):
+    file = forms.FileField()

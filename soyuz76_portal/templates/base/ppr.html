@@ -3,10 +3,16 @@
   Страница выгрузки ППР
 {% endblock %}
 {% block content %}
-  {% for post in page_obj %}
-    <article class="mb-5">
-      {% include "includes/post_card.html" %}
-    </article>
-  {% endfor %}
-  {% include "includes/paginator.html" %}
+    <ul>
+      {% for file in files %}
+        <li>{{ file.file_name }} (Загружено: {{ file.upload_date }})</li>
+      {% endfor %}
+    </ul>
+
+    <!-- Добавьте кнопку "Загрузить" -->
+    <form method="post" enctype="multipart/form-data" action="{% url 'pages:upload_file' %}">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Загрузить</button>
+    </form>
 {% endblock %}

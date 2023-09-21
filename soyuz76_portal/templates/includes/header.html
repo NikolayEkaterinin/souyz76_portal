@@ -28,7 +28,7 @@
         <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
             href="{% url 'fn:fn_list' %}">График замены ФН</a></button>
         <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
-            href="#">ППР</a></button>
+            href="{% url 'pages:engineer_ppr' %}">ППР</a></button>
       </div>
       {% if user.employee_position.name == 'Администратор' %}
       <div class="btn-group" role="group" aria-label="Basic outlined example">
@@ -53,7 +53,7 @@
       <div class="btn-group" role="group" aria-label="Basic outlined example">
         <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
             href="{% if user.employee_position.name == 'Администратор' %}{% url 'pages:profile_admin' user.username %}{% else %}{% url 'pages:profile' user.username %}{% endif %}">
-            {{ user.first_name }}
+            {{ user.last_name }}
           </a>
         </button>
         <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"

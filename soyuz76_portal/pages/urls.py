@@ -23,7 +23,9 @@ from .views import (
     InstructionCategoryListView,
     ProfileAdminDetailView,
     PostDetailView,
-    PostCreateView
+    PostCreateView,
+    EngineerFolderListView,
+    upload_file
 )
 from django.views.generic.edit import CreateView
 from user.forms import RegistrationForm
@@ -51,6 +53,10 @@ urlpatterns = [
     path('category/create/', CategoryCreateView.as_view(), name='create_category'),
 
     path('instructions/category/<slug:category_slug>/', InstructionCategoryListView.as_view(), name='instructions_category_list'),
+
+    # urls каталоги
+    path('engineer_ppr/', EngineerFolderListView.as_view(), name='engineer_ppr'),
+    path('upload/', upload_file, name='upload_file'),
 
     # Логин.
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),

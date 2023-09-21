@@ -31,8 +31,6 @@ t
 Dvenv/lib/python3.11/site-packages/django/core/management/__init__.py,d/2/d29466da6aa61487c6ee496706bf07bf40a42a2c
 _
 /soyuz76_portal/static_dev/css/bootstrap.min.css,6/5/65d92063e2c94409ef900607bc5f76afe1a6c488
-V
-&soyuz76_portal/templates/base/ppr.html,b/7/b79f089c54790e6b1314370379be8b82fe38b89a
 S
 #soyuz76_portal/instructions/apps.py,5/c/5cc5764f2d9fe26f08b2dafa6591b17043ce3e5d
 `
@@ -77,8 +75,6 @@ _
 0soyuz76_portal/templates/includes/post_card.html,f/c/fcf6bbf7bbc4b47052acec6aebca89a5742c8633
 d
 4soyuz76_portal/templates/includes/category_link.html,3/d/3d108eba13e753ff87936a54ed6fd2252c118c4d
-L
-soyuz76_portal/user/views.py,8/8/8898a8be850cd1d630dbc7fb568faa836adad8a4
 o
 ?soyuz76_portal/templates/registration/password_change_done.html,f/5/f53a7107c2707e77385fa9b6dfcc1846ed3aa5e9
 n
@@ -109,10 +105,6 @@ J
 soyuz76_portal/fn/admin.py,d/3/d3b9674befd0a723db8b82c7536bbd6ad16ecffe
 `
 0soyuz76_portal/templates/base/profile_admin.html,0/d/0d9e330d4311e3cc2d3fcc126da96e5598d45cf7
-U
-%soyuz76_portal/soyuz76_portal/urls.py,2/9/29f740ce22f0760cd4cff00d9fb88f6a979c5b55
-J
-soyuz76_portal/fn/forms.py,c/d/cd3453f29ff2d6d4626bff49f99e201376623286
 h
 8soyuz76_portal/templates/base/partial_filtered_data.html,b/b/bbdaf441968a57ccfdac5a01ec5a939ed0e61d0c
 N

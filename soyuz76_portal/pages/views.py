@@ -1,6 +1,6 @@
 from datetime import timezone
 from urllib import request
-
+import os
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
@@ -8,8 +8,8 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView,
                                   ListView, UpdateView, TemplateView)
 
-from .models import Post
-from .forms import PostForm
+from .models import Post, File
+from .forms import PostForm, FileUploadForm
 
 from instructions.models import Instruction, Category
 from instructions.forms import InstructionForm, CategoryForm
@@ -55,9 +55,39 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = PostForm(instance=self.object)
+        context['form'] = PostForm(instance=self.object())
         return context
 
+class EngineerFolderListView(ListView):
+    template_name = 'base/ppr.html'
+    context_object_name = 'files'
+
+    def get_queryset(self):
+        # Получаем путь к папке инженера из текущего пользователя
+        engineer_folder_path = self.request.user.engineer_folder_path
+
+        print("Engineer Folder Path:", engineer_folder_path)  # Отладочный вывод
+
+        if engineer_folder_path:
+            # Получаем объекты файла из базы данных, отсортированные по дате загрузки
+            files = File.objects.filter(user=self.request.user).order_by('-upload_date')
+            print('+')
+        else:
+            print('-')
+            files = []
+
+        return files
+
+def upload_file(request):
+    if request.method == 'POST':
+        form = FileUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_file = request.FILES['file']
+
+    else:
+        form = FileUploadForm()
+
+    return render(request, 'base/upload_ppr.html', {'form': form})
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -158,8 +188,10 @@ class ProfileDetailView(ListView, CommonViewMixin):
         user_regions = self.request.user.regions.all()  # Получаем все регионы текущего пользователя
         common_queryset = CommonViewMixin().get_queryset()
 
+
         # Фильтруем queryset на основе совпадения регионов пользователя и данных из CommonViewMixin
         queryset = common_queryset.filter(regions__in=user_regions)
+
 
         return queryset
 

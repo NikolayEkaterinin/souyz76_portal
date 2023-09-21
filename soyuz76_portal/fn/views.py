@@ -159,8 +159,11 @@ class FnReplacementListView(CommonViewMixin, ListView):
         user_regions = self.request.user.regions.all()  # Получаем все регионы текущего пользователя
         common_queryset = CommonViewMixin().get_queryset()
 
+        if self.request.user.employee_position.name == 'Администратор':
+            queryset = common_queryset
         # Фильтруем queryset на основе совпадения регионов пользователя и данных из CommonViewMixin
-        queryset = common_queryset.filter(regions__in=user_regions)
+        else:
+            queryset = common_queryset.filter(regions__in=user_regions)
 
         return queryset
 

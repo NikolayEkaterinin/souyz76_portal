@@ -1,0 +1,10 @@
+<!-- engineer_folder_content.html -->
+<br>
+<h1 style="font-size: 14px">Содержимое папки инженера:</h1>
+<ul>
+  {% for file in files %}
+      <h1>файлы</h1>
+    <li>{{ file.name }}</li>
+  {% endfor %}
+</ul>
+
