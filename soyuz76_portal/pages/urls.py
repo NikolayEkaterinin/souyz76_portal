@@ -25,7 +25,8 @@ from .views import (
     PostDetailView,
     PostCreateView,
     EngineerFolderListView,
-    upload_file
+    PprCreateView,
+
 )
 from django.views.generic.edit import CreateView
 from user.forms import RegistrationForm
@@ -56,7 +57,7 @@ urlpatterns = [
 
     # urls каталоги
     path('engineer_ppr/', EngineerFolderListView.as_view(), name='engineer_ppr'),
-    path('upload/', upload_file, name='upload_file'),
+    path('ppr_add/', PprCreateView.as_view(), name='ppr_add'),
 
     # Логин.
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),

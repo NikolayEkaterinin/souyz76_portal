@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from parameters.models import EmployeePosition, Regions
 
+
+
 class CustomUser(AbstractUser):
     username = models.TextField('login',
                                 max_length=30,

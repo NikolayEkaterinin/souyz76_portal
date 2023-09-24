@@ -10,9 +10,9 @@
     </ul>
 
     <!-- Добавьте кнопку "Загрузить" -->
-    <form method="post" enctype="multipart/form-data" action="{% url 'pages:upload_file' %}">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form }}
-        <button type="submit">Загрузить</button>
+          <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+            href="{% url 'pages:ppr_add' %}">Загрузить ППР</a></button>
     </form>
 {% endblock %}

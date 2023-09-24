@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, File
 
 
 class PostForm(forms.ModelForm):
@@ -8,5 +8,8 @@ class PostForm(forms.ModelForm):
         fields = ['name', 'description', 'url']
 
 
-class FileUploadForm(forms.Form):
-    file = forms.FileField()
+class FileUploadForm(forms.ModelForm):
+    class Meta:
+        model = File
+        fields = ['file_name', 'file']
+

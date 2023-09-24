@@ -1,9 +1,11 @@
 from datetime import timezone
 from urllib import request
 import os
+
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView,
                                   ListView, UpdateView, TemplateView)
@@ -58,36 +60,39 @@ class PostDetailView(LoginRequiredMixin, DetailView):
         context['form'] = PostForm(instance=self.object())
         return context
 
+
 class EngineerFolderListView(ListView):
     template_name = 'base/ppr.html'
     context_object_name = 'files'
+    model = File
 
     def get_queryset(self):
-        # Получаем путь к папке инженера из текущего пользователя
         engineer_folder_path = self.request.user.engineer_folder_path
-
-        print("Engineer Folder Path:", engineer_folder_path)  # Отладочный вывод
-
         if engineer_folder_path:
-            # Получаем объекты файла из базы данных, отсортированные по дате загрузки
             files = File.objects.filter(user=self.request.user).order_by('-upload_date')
-            print('+')
         else:
-            print('-')
             files = []
-
         return files
 
-def upload_file(request):
-    if request.method == 'POST':
-        form = FileUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            uploaded_file = request.FILES['file']
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = FileUploadForm()
+        return context
 
-    else:
-        form = FileUploadForm()
 
-    return render(request, 'base/upload_ppr.html', {'form': form})
+class PprCreateView(LoginRequiredMixin, CreateView):
+    model = File
+    form_class = FileUploadForm
+    template_name = 'base/create.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        username = self.request.user.username
+        return reverse('pages:engineer_ppr')
+
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -104,7 +109,6 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     def test_func(self):
         return is_superuser(self.request.user)
-
 
 
 class InstructionCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
